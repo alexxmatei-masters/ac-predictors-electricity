@@ -3,7 +3,7 @@ use std::collections::HashMap;
 fn main() {
     const CONTEXT_SIZE: u8 = 3;
     const TRAINING_DATA: &str = "ABCDABCDABCEABC";
-    let mut markov_dict: HashMap<&str, Vec<&mut (&str, u8)>> = HashMap::new(); // create an empty hash map
+    let mut markov_dict: HashMap<&str, Vec<(&str, u8)>> = HashMap::new(); // create an empty hash map
     println!("Training data:\n");
     println!(" # | Patterns | States");
     for i in 0..TRAINING_DATA.len() - CONTEXT_SIZE as usize {
@@ -14,16 +14,16 @@ fn main() {
         println!("{:?}", state);
         if let Some(value) = markov_dict.get_mut(pattern) {
             print!("Reading {:?}\n", value);
-            // for &mut mut tuple in value {
-            //     // println!("tupl {:?}, stat {}", tuple, state);
-            //     if tuple.0 == state {
-            //         tuple.1 += 1;
-            //     }
-            // }
+            for &mut (tuple_state, ref mut count) in value.iter_mut() {
+                // println!("tupl {:?}, stat {}", tuple, state);
+                if tuple_state == state {
+                    *count += 1;
+                }
+            }
         } else {
             // print!("Inserted {} {}\n", pattern, state);
-            let mut vect = vec![(state.to_owned(), 1 as u8)];
-            // markov_dict.insert(pattern, vect);
+            let vect = vec![(state, 1 as u8)];
+            markov_dict.insert(pattern, vect);
         }
     }
 
