@@ -13,15 +13,18 @@ fn main() {
         print!("{:?}    | ", pattern);
         println!("{:?}", state);
         if let Some(value) = markov_dict.get_mut(pattern) {
-            print!("Reading {:?}\n", value);
+            let mut new_elements = Vec::new();
+
             for &mut (tuple_state, ref mut count) in value.iter_mut() {
-                // println!("tupl {:?}, stat {}", tuple, state);
                 if tuple_state == state {
                     *count += 1;
+                } else {
+                    new_elements.push((state, 1));
                 }
             }
+
+            value.extend(new_elements);
         } else {
-            // print!("Inserted {} {}\n", pattern, state);
             let vect = vec![(state, 1 as u8)];
             markov_dict.insert(pattern, vect);
         }
