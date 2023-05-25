@@ -82,7 +82,8 @@ fn main() {
     for i in 0..training_data.len() - CONTEXT_SIZE as usize {
         print!("{:5} | ", i);
         let pattern = &training_data[i..i + CONTEXT_SIZE as usize].to_vec();
-        let state = &training_data[i + 3..i + 4].to_vec();
+        let state =
+            &training_data[i + CONTEXT_SIZE as usize..i + CONTEXT_SIZE as usize + 1].to_vec();
         print!("{:4?} | ", pattern);
         println!("{:?}", state);
 
@@ -194,7 +195,7 @@ fn main() {
         // }
 
         let pattern = &testing_data[i..i + CONTEXT_SIZE as usize];
-        let state = &testing_data[i + 3..i + 4];
+        let state = &testing_data[i + CONTEXT_SIZE as usize..i + CONTEXT_SIZE as usize + 1];
 
         let key_to_find = pattern.to_vec();
         if let Some(values) = markov_dict.get(&key_to_find) {
