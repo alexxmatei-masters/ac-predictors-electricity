@@ -40,7 +40,9 @@ fn main() {
     // Round and convert the elements to u16
     let rounded_numbers: Vec<u16> = lines.iter().map(|&num| num.round() as u16).collect();
 
-    // Calculate the split index
+    /* Calculate the split index used to split the initial vector into 2
+    Training data set - first 80% of the vector
+    Testing data set  - the following 20% */
     let split_index = (rounded_numbers.len() as f32 * 0.8) as usize;
 
     // Split the vector into two parts
@@ -54,10 +56,11 @@ fn main() {
 
     const CONTEXT_SIZE: u8 = 3;
     for i in 0..training_data.len() - CONTEXT_SIZE as usize {
-        print!("{:5} | ", i);
         let pattern = &training_data[i..i + CONTEXT_SIZE as usize].to_vec();
         let state =
             &training_data[i + CONTEXT_SIZE as usize..i + CONTEXT_SIZE as usize + 1].to_vec();
+
+        print!("{:5} | ", i);
         print!("{:4?} | ", pattern);
         println!("{:?}", state);
 
@@ -117,11 +120,12 @@ fn main() {
             /* If we don't find the key in the dictionary */
             predicted_state = previous_state;
         }
+        let error = ((state[0] as i16 - predicted_state as i16) as i16).abs() as u32;
+
         print!("{:5} | ", i);
         print!("{:4?} | ", pattern);
         print!("{:4?}       | ", state[0]);
         print!("{:4?}            | ", predicted_state);
-        let error = ((state[0] as i16 - predicted_state as i16) as i16).abs() as u32;
         println!("{:4?}             ", error);
         error_vector.push(error);
 
