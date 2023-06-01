@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 fn main() {
-    let file_path = "pv_electricity.txt"; // Replace with the actual file path
+    let file_path = "pv_electricity.txt";
 
     // Open the file in read-only mode
     let file = match File::open(file_path) {
@@ -95,7 +95,7 @@ fn main() {
     let mut previous_state = 0;
     let mut error_vector: Vec<u32> = Vec::new();
     for i in 0..testing_data.len() - CONTEXT_SIZE as usize {
-        let mut predicted_state = 255;
+        let mut predicted_state = 0;
 
         let pattern = &testing_data[i..i + CONTEXT_SIZE as usize];
         let state = &testing_data[i + CONTEXT_SIZE as usize..i + CONTEXT_SIZE as usize + 1];
